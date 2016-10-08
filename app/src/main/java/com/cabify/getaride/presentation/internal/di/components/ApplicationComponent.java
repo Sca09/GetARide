@@ -19,6 +19,7 @@ import android.content.Context;
 
 import com.cabify.getaride.presentation.internal.di.modules.ApplicationModule;
 import com.cabify.getaride.presentation.presenter.MapPresenterImpl;
+import com.cabify.getaride.presentation.view.activity.BaseActivity;
 
 import javax.inject.Singleton;
 
@@ -31,6 +32,7 @@ import dagger.Component;
 @Singleton // Constraints this component to one-per-application or unscoped bindings.
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
+    void inject(BaseActivity baseActivity);
     void inject(MapPresenterImpl presenter);
 
     //Exposed to sub-graphs.

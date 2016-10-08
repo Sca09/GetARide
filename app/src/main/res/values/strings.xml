@@ -20,4 +20,6 @@
     <string name="start_asap">Start trip asap</string>
 
     <string name="date_passed_error_message">Please, choose a future date for your trip </string>
+    <string name="title_activity_estimation_list">EstimationListActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

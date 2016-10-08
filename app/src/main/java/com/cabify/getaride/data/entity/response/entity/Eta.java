@@ -3,11 +3,13 @@ package com.cabify.getaride.data.entity.response.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by davidtorralbo on 07/10/16.
  */
 
-public class Eta {
+public class Eta implements Serializable {
 
     @SerializedName("min")
     @Expose

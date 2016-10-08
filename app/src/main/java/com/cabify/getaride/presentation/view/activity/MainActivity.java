@@ -303,7 +303,8 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     @Override
     public void showEstimateResults(List<EstimationItem> estimationItemList) {
-        showSnackbar("Found "+ estimationItemList.size() +" possibilities", coordinatorLayout);
+        //showSnackbar("Found "+ estimationItemList.size() +" possibilities", coordinatorLayout);
+        navigator.navigateToEstimationList(this, (ArrayList<EstimationItem>) estimationItemList);
     }
 
     @Override
