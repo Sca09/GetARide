@@ -14,5 +14,6 @@
     <string name="address_in_box">%1$s, %2$s</string>
     <string name="start_asap">Empezar viaje lo antes posible</string>
     <string name="start_at">Comienzo</string>
+    <string name="date_passed_error_message">Por favor, elije una fecha futura para tu viaje</string>
 
 </resources>

@@ -10,7 +10,7 @@ import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.domain.estimate.EstimateInteractor;
 import com.cabify.getaride.domain.estimate.EstimateInteractorImpl;
 import com.cabify.getaride.presentation.utils.Utils;
-import com.cabify.getaride.presentation.view.activity.MapView;
+import com.cabify.getaride.presentation.view.MapView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -246,7 +246,11 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
         startAtCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         startAtCalendar.set(Calendar.MINUTE, minute);
 
-        setStartAtDatSet(true);
-        view.setStartAtTxt(Utils.getDateStringFromDate(startAtCalendar));
+        if(Utils.isDatePassed(startAtCalendar)) {
+            view.showErrorMessage(context.getString(R.string.date_passed_error_message));
+        } else {
+            setStartAtDatSet(true);
+            view.setStartAtTxt(Utils.getDateStringFromDateForPicker(startAtCalendar));
+        }
     }
 }

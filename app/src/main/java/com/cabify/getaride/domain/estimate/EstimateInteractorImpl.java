@@ -36,10 +36,7 @@ public class EstimateInteractorImpl implements EstimateInteractor, EstimateRepos
         Stop toStop = new Stop(toPoint, toAddress);
         stops.add(toStop);
 
-        String startAt = "";
-        if(startAtCalendar != null) {
-            startAt = Utils.getDateStringFromDate(startAtCalendar);
-        }
+        String startAt = (startAtCalendar != null) ? Utils.getDateStringFromDate(startAtCalendar) : "";
 
         repository.getEstimation(authToken, stops, startAt, this);
     }

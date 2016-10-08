@@ -1,4 +1,4 @@
-package com.cabify.getaride.presentation.view.activity;
+package com.cabify.getaride.presentation.view;
 
 import android.view.View;
 

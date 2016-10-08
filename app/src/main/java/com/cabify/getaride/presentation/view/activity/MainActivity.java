@@ -29,6 +29,7 @@ import com.cabify.getaride.presentation.internal.di.components.ApplicationCompon
 import com.cabify.getaride.presentation.presenter.MapPresenter;
 import com.cabify.getaride.presentation.presenter.MapPresenterImpl;
 import com.cabify.getaride.presentation.utils.Constants;
+import com.cabify.getaride.presentation.view.MapView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
