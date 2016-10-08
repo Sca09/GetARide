@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">GetARide</string>
+    <string name="title_activity_main">Get A Ride</string>
+
+    <string name="permissions_not_granted">Permisos no concedidos, haremos todo lo que podamos para encontrar tu hubicación</string>
+    <string name="default_error_message">Vaya, parece que algo fué mal. Por favor, inténtalo de nuevo.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="grant">Aceptar</string>
+    <string name="location_permissions_title">Gestión de permisos</string>
+    <string name="location_permissions_message">El acceso a su localización mejorará el rendimiento de la aplicación</string>
+    <string name="your_current_location">Tu ubicación actual</string>
+    <string name="from">Desde</string>
+    <string name="to">Hasta</string>
+    <string name="address_in_box">%1$s, %2$s</string>
+    <string name="start_asap">Empezar viaje lo antes posible</string>
+    <string name="start_at">Comienzo</string>
+
+</resources>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">GetARide</string>
+    <string name="title_activity_main">Get A Ride</string>
+
+    <string name="location_permissions_title">Permissions management</string>
+    <string name="location_permissions_message">Allowing access to your location will improve the performance of the app</string>
+    <string name="grant">Grant</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="default_error_message">Ups, it seems something went wrong. Please, retry again.</string>
+    <string name="permissions_not_granted">Location permissions not granted, we will do our best to find your best location</string>
+
+    <string name="your_current_location">Your current location</string>
+
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="start_at">Start at</string>
+
+    <string name="address_in_box">%1$s, %2$s</string>
+    <string name="start_asap">Start trip asap</string>
+</resources>

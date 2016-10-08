@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+    defaultConfig {
+        applicationId "com.cabify.getaride"
+        minSdkVersion 16
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                if (variant.buildType.name.equals("release")) {
+                    def fileName = "GetARide_${versionName}.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                } else if (variant.buildType.name.equals("debug")) {
+                    def fileName = "GetARide_${versionName}-debug.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
+        }
+    }
+}
+
+ext {
+    JUNIT_VERSION = '4.12'
+    DAGGER_VERSION = '2.5'
+    SUPPORT_LIB_VERSION = '24.2.0'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.google.android.gms:play-services:9.4.0'
+    testCompile 'junit:junit:4.12'
+
+    // Dagger
+    apt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    provided 'javax.annotation:jsr250-api:1.0'
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testApt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    compile "com.google.dagger:dagger:$DAGGER_VERSION"
+    compile 'javax.inject:javax.inject:1'
+    compile 'org.slf4j:slf4j-nop:1.5.8'
+
+    // Support
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:support-v4:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:design:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:recyclerview-v7:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:cardview-v7:$SUPPORT_LIB_VERSION"
+
+    // retrofit, gson, guava
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.google.guava:guava:15.0'
+
+    // date and time pickers
+    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
+}
