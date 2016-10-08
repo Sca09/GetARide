@@ -3,21 +3,18 @@ package com.cabify.getaride.presentation.view.activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -32,7 +29,6 @@ import com.cabify.getaride.presentation.internal.di.components.ApplicationCompon
 import com.cabify.getaride.presentation.presenter.MapPresenter;
 import com.cabify.getaride.presentation.presenter.MapPresenterImpl;
 import com.cabify.getaride.presentation.utils.Constants;
-import com.cabify.getaride.presentation.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,7 +44,6 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by davidtorralbo on 07/10/16.
@@ -76,17 +71,6 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     private GoogleMap mMap;
     private MapPresenter presenter;
-
-    private Marker fromMarker;
-    private LatLng fromLatLng;
-    private Address fromAddress;
-    private Marker toMarker;
-    private LatLng toLatLng;
-    private Address toAddress;
-    private Calendar startAtCalendar;
-    private boolean startAtDatSet = false;
-
-    private  boolean isFabOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,8 +149,8 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     @Override
     public void onBackPressed() {
         if(newEstimationStopsLayout.getVisibility() == View.VISIBLE) {
-            closeEstimationLayout();
-            if(isFabOpen){
+            presenter.closeEstimationLayout();
+            if(presenter.isFabOpen()){
                 closeFab();
             }
         } else {
@@ -196,12 +180,13 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
             @Override
             public void onMapClick(LatLng point) {
-                setPoint(point);
+                presenter.setPoint(point);
             }
         });
     }
 
-    private void focusOnCurrentPosition() {
+    @Override
+    public void focusOnCurrentPosition() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             checkNeededPermissions();
         } else {
@@ -214,7 +199,8 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
         }
     }
 
-    private void setCurrentLocation() {
+    @Override
+    public void setCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             checkNeededPermissions();
         } else {
@@ -223,7 +209,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
             Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
             if (location != null) {
                 LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-                setPoint(point);
+                presenter.setPoint(point);
             }
         }
     }
@@ -316,7 +302,6 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     @Override
     public void showEstimateResults(List<EstimationItem> estimationItemList) {
-        //closeEstimationLayout();
         showSnackbar("Found "+ estimationItemList.size() +" possibilities", coordinatorLayout);
     }
 
@@ -338,79 +323,25 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     @Override
     public void onClick(View v) {
         if(v == fabCurrentLocation) {
-            if(isFabOpen){
-                closeFab();
-                closeEstimationLayout();
-            } else {
-                openFab();
-                focusOnCurrentPosition();
-                setCurrentLocation();
-            }
+            presenter.buttonClickedFabCurrentLocation();
         } else if(v == fabGetEstimation) {
-            presenter.getEstimation(fromLatLng, fromAddress, toLatLng, toAddress, (startAtDatSet) ? startAtCalendar : null);
+            presenter.buttonClickedFabGetEstimation();
         } else if(v == removeFromCurrentLocation) {
-            closeEstimationLayout();
-            if(isFabOpen){
-                closeFab();
-            }
+            presenter.buttonClickedRemoveFromLocation();
         } else if(v == removeToCurrentLocation) {
-            closeToLayout();
+            presenter.buttonClickedRemoveToLocation();
         } else if(v == removeStartAt) {
-            if(startAtDatSet) {
-                resetStartAtDate();
-            } else {
-                initDatePicker();
-            }
+            presenter.buttonClickedRemoveStartAt();
         }
     }
 
-    private void setPoint(LatLng point) {
-        Address address = null;
-        try {
-            Geocoder geo = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geo.getFromLocation(point.latitude, point.longitude, 1);
-            if (addresses.isEmpty()) {
-                Log.d("GetARide", "Waiting for Location");
-            }
-            else if (addresses.size() > 0) {
-                address = addresses.get(0);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace(); // getFromLocation() may sometimes fail
-        }
-
-        if(fromLatLng == null) {
-            fromLatLng = point;
-            fromMarker = mMap.addMarker(new MarkerOptions().position(point).title(getString(R.string.from)));
-            if(address != null) {
-                fromAddress = address;
-                fromEditText.setText(getString(R.string.address_in_box, address.getAddressLine(0), address.getAddressLine(1)));
-            } else {
-                fromEditText.setText(point.toString());
-            }
-
-            openFromLayout();
-            focusOnPoint(point.latitude, point.longitude);
-        } else if(toLatLng == null){
-            toLatLng = point;
-            toMarker = mMap.addMarker(new MarkerOptions().position(point).title(getString(R.string.to)));
-            if(address != null) {
-                toAddress = address;
-                toEditText.setText(getString(R.string.address_in_box, address.getAddressLine(0), address.getAddressLine(1)));
-            } else {
-                toEditText.setText(point.toString());
-            }
-
-            openToLayout();
-
-            if(!isFabOpen) {
-                openFab();
-            }
-        }
+    @Override
+    public Marker addMarker(LatLng point, String title) {
+        return mMap.addMarker(new MarkerOptions().position(point).title(title));
     }
 
-    private void focusOnPoint(double latitude, double longitude){
+    @Override
+    public void focusOnPoint(double latitude, double longitude) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
 
         LatLng currentCoordinates = new LatLng(latitude, longitude);
@@ -421,66 +352,80 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-    private void openFab() {
+    @Override
+    public void openFab() {
         fabCurrentLocation.setImageResource(R.drawable.ic_clear_black_24dp);
         fabCurrentLocation.startAnimation(rotate_forward);
-        isFabOpen = true;
+        presenter.setFabOpenStatus(true);
     }
 
-    private void closeFab() {
+    @Override
+    public void closeFab() {
         fabCurrentLocation.setImageResource(R.drawable.ic_my_location_black_24dp);
         fabCurrentLocation.startAnimation(rotate_backward);
-        isFabOpen = false;
+        presenter.setFabOpenStatus(false);
     }
 
-    private void openFromLayout() {
+    @Override
+    public void setFromEditText(String text) {
+        fromEditText.setText(text);
+    }
+
+    @Override
+    public void setToEditText(String text) {
+        toEditText.setText(text);
+    }
+
+    @Override
+    public void setStartAtTxt(String text) {
+        startAtEditText.setText(text);
+    }
+
+    @Override
+    public void openFromLayout() {
         newEstimationStopsLayout.startAnimation(fab_open);
         newEstimationStopsLayout.setVisibility(View.VISIBLE);
     }
 
-    private void closeFromLayout() {
+    @Override
+    public void closeFromLayout() {
         newEstimationStopsLayout.startAnimation(fab_close);
         newEstimationStopsLayout.setVisibility(View.GONE);
 
-        fromEditText.setText("");
-        if(fromMarker != null) {
-            fromMarker.remove();
-        }
-        fromLatLng = null;
+        setFromEditText("");
+        presenter.closeFromLayout();
     }
 
-    private void openToLayout() {
+    @Override
+    public void openToLayout() {
         toEditTextLayout.setVisibility(View.VISIBLE);
         //fabGetEstimation.startAnimation(fab_open);
         fabGetEstimation.setVisibility(View.VISIBLE);
     }
 
-    private void closeToLayout() {
+    @Override
+    public void closeToLayout() {
         toEditTextLayout.setVisibility(View.GONE);
         //fabGetEstimation.startAnimation(fab_close);
         fabGetEstimation.setVisibility(View.GONE);
 
-        toEditText.setText("");
-        if(toMarker != null) {
-            toMarker.remove();
-        }
-        toLatLng = null;
+        setToEditText("");
+        presenter.closeToLayout();
     }
 
-    private void closeEstimationLayout() {
-        closeFromLayout();
-        closeToLayout();
-        resetStartAtDate();
-
+    @Override
+    public void clearMap() {
         mMap.clear();
     }
 
+    @Override
     public void resetStartAtDate() {
-        startAtDatSet = false;
-        startAtEditText.setText(getString(R.string.start_asap));
+        presenter.setStartAtDatSet(false);
+        setStartAtTxt(getString(R.string.start_asap));
     }
 
-    private void initDatePicker() {
+    @Override
+    public void initDatePicker() {
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 MainActivity.this,
@@ -491,33 +436,24 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
         dpd.show(getFragmentManager(), "Datepickerdialog");
     }
 
-    private void initTimePicker() {
+    @Override
+    public void initTimePicker() {
         Calendar now = Calendar.getInstance();
         TimePickerDialog tpd = TimePickerDialog.newInstance(
                 MainActivity.this,
                 now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE),
                 true);
-        tpd.show(getFragmentManager(), "Datepickerdialog");
+        tpd.show(getFragmentManager(), "Timepickerdialog");
     }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Log.d("GetARide", "year["+ year +"] - monthOfYear["+ monthOfYear +"] - dayOfMonth["+ dayOfMonth +"]");
-        startAtCalendar = Calendar.getInstance();
-        startAtCalendar.set(Calendar.YEAR, year);
-        startAtCalendar.set(Calendar.MONTH, monthOfYear);
-        startAtCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        initTimePicker();
+        presenter.setStartAtDate(year, monthOfYear, dayOfMonth);
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        Log.d("GetARide", "hourOfDay["+ hourOfDay +"] - minute["+ minute +"] - second["+ second +"]");
-        startAtCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        startAtCalendar.set(Calendar.MINUTE, minute);
-
-        startAtDatSet = true;
-        startAtEditText.setText(Utils.getDateStringFromDate(startAtCalendar));
+        presenter.setStartAtTime(hourOfDay, minute);
     }
 }

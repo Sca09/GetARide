@@ -1,7 +1,11 @@
 package com.cabify.getaride.presentation.view.activity;
 
+import android.view.View;
+
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
@@ -14,6 +18,40 @@ public interface MapView {
     void showProgress();
 
     void hideProgress();
+
+    Marker addMarker(LatLng point, String title);
+
+    void focusOnPoint(double latitude, double longitude);
+
+    void focusOnCurrentPosition();
+
+    void setCurrentLocation();
+
+    void openFab();
+
+    void closeFab();
+
+    void setFromEditText(String text);
+
+    void setToEditText(String text);
+
+    void setStartAtTxt(String text);
+
+    void openFromLayout();
+
+    void closeFromLayout();
+
+    void openToLayout();
+
+    void closeToLayout();
+
+    void clearMap();
+
+    void resetStartAtDate();
+
+    void initDatePicker();
+
+    void initTimePicker();
 
     void showEstimateResults(List<EstimationItem> estimationItemList);
 

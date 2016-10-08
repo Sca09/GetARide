@@ -12,5 +12,35 @@ import java.util.Calendar;
 
 public interface MapPresenter extends Presenter {
 
-    public void getEstimation(LatLng fromPoint, Address fromAddress, LatLng toPoint, Address toAddress, Calendar startAtCalendar);
+    void setPoint(LatLng point);
+
+    void setFabOpenStatus(boolean status);
+
+    boolean isFabOpen();
+
+    boolean isStartAtDatSet();
+
+    void setStartAtDatSet(boolean startAtDatSet);
+
+    void setStartAtDate(int year, int monthOfYear, int dayOfMonth);
+
+    void setStartAtTime(int hourOfDay, int minute);
+
+    void getEstimation(LatLng fromPoint, Address fromAddress, LatLng toPoint, Address toAddress, Calendar startAtCalendar);
+
+    void buttonClickedFabCurrentLocation();
+
+    void buttonClickedFabGetEstimation();
+
+    void buttonClickedRemoveFromLocation();
+
+    void buttonClickedRemoveToLocation();
+
+    void buttonClickedRemoveStartAt();
+
+    void closeEstimationLayout();
+
+    void closeFromLayout();
+
+    void closeToLayout();
 }
