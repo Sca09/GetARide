@@ -23,4 +23,6 @@ public class Constants {
     public static final String VEHICULE_TYPE_RICKSHAW   = "rickshaw";
     public static final String VEHICULE_TYPE_TAXI       = "taxi";
     public static final String VEHICULE_TYPE_CABION     = "cabion";
+    public static final String VEHICULE_TYPE_LUXURY     = "luxury";
+    public static final String VEHICULE_TYPE_ACCESS     = "access";
 }

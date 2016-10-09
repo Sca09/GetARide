@@ -11,6 +11,8 @@
             <flag name="rickshaw"   value="5"/>
             <flag name="taxi"       value="6"/>
             <flag name="cabion"     value="7"/>
+            <flag name="luxury"     value="8"/>
+            <flag name="access"     value="9"/>
         </attr>
         <attr name="ico" format="reference" />
         <attr name="name" format="string" />

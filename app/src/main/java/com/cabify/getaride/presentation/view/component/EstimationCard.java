@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.cabify.getaride.R;
 import com.cabify.getaride.presentation.utils.Constants;
 import com.google.common.base.Strings;
+import com.squareup.picasso.Picasso;
 
 public class EstimationCard extends LinearLayout {
 
@@ -36,7 +37,9 @@ public class EstimationCard extends LinearLayout {
             Constants.VEHICULE_TYPE_BABY,
             Constants.VEHICULE_TYPE_RICKSHAW,
             Constants.VEHICULE_TYPE_TAXI,
-            Constants.VEHICULE_TYPE_CABION};
+            Constants.VEHICULE_TYPE_CABION,
+            Constants.VEHICULE_TYPE_LUXURY,
+            Constants.VEHICULE_TYPE_ACCESS};
 
     public EstimationCard(Context context) {
         super(context, null);
@@ -80,38 +83,50 @@ public class EstimationCard extends LinearLayout {
     private void setLayout() {
         switch (vehicleTypes[type]) {
             case Constants.VEHICULE_TYPE_LITE: default:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_lite));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_lite));
                 break;
 
             case Constants.VEHICULE_TYPE_EXECUTIVE:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_executive));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_executive));
                 break;
 
             case Constants.VEHICULE_TYPE_PET:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pet));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_pet));
                 break;
 
             case Constants.VEHICULE_TYPE_DELIVERY:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_delivery));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_delivery));
                 break;
 
             case Constants.VEHICULE_TYPE_BABY:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baby));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_baby));
                 break;
 
             case Constants.VEHICULE_TYPE_RICKSHAW:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_rickshaw));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_rickshaw));
                 break;
 
             case Constants.VEHICULE_TYPE_TAXI:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_taxi));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_taxi));
                 break;
 
             case Constants.VEHICULE_TYPE_CABION:
-                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cabion));
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_cabion));
+                break;
+
+            case Constants.VEHICULE_TYPE_LUXURY:
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_luxury));
+                break;
+
+            case Constants.VEHICULE_TYPE_ACCESS:
+                mainImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_estimation_image_access));
                 break;
         }
 
+        if(!Strings.isNullOrEmpty(ico)) {
+            Picasso.with(context).load(ico).into(icoImage);
+
+        }
         if(!Strings.isNullOrEmpty(name)) {
             nameText.setText(name);
         }
