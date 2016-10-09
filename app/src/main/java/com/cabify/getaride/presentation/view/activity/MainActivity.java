@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -179,7 +178,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
         LatLng madridCoordinates = new LatLng(40.4168, -3.7038);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(madridCoordinates, 13));
 
-        focusOnCurrentPosition();
+        focusMapOnCurrentPosition();
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -191,10 +190,10 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     }
 
     @Override
-    public void focusOnCurrentPosition() {
+    public void focusMapOnCurrentPosition() {
         Location location = getLastKnownLocation();
         if (location != null) {
-            focusOnPoint(location.getLatitude(), location.getLongitude());
+            focusMapOnPoint(location.getLatitude(), location.getLongitude());
         }
     }
 
@@ -278,7 +277,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
                 }
                 // In case we want to manage the user in different ways
                 if (allGranted) {
-                    focusOnCurrentPosition();
+                    focusMapOnCurrentPosition();
                 } else {
                     showSnackbar(getString(R.string.permissions_not_granted), coordinatorLayout);
                 }
@@ -374,7 +373,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     }
 
     @Override
-    public void focusOnPoint(double latitude, double longitude) {
+    public void focusMapOnPoint(double latitude, double longitude) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
 
         LatLng currentCoordinates = new LatLng(latitude, longitude);

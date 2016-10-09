@@ -84,7 +84,7 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
             closeEstimationLayout();
         } else {
             view.openFab();
-            view.focusOnCurrentPosition();
+            view.focusMapOnCurrentPosition();
             view.setCurrentLocation();
         }
     }
@@ -199,7 +199,7 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
             }
 
             view.openFromLayout();
-            view.focusOnPoint(point.latitude, point.longitude);
+            view.focusMapOnPoint(point.latitude, point.longitude);
         } else if(toLatLng == null){
             toLatLng = point;
             toMarker = view.addMarker(point, context.getString(R.string.to));

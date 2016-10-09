@@ -21,9 +21,9 @@ public interface MapView {
 
     Marker addMarker(LatLng point, String title);
 
-    void focusOnPoint(double latitude, double longitude);
+    void focusMapOnPoint(double latitude, double longitude);
 
-    void focusOnCurrentPosition();
+    void focusMapOnCurrentPosition();
 
     void setCurrentLocation();
 
