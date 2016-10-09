@@ -192,31 +192,43 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     @Override
     public void focusOnCurrentPosition() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            checkNeededPermissions();
-        } else {
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-            if (location != null) {
-                focusOnPoint(location.getLatitude(), location.getLongitude());
-            }
+        Location location = getLastKnownLocation();
+        if (location != null) {
+            focusOnPoint(location.getLatitude(), location.getLongitude());
         }
     }
 
     @Override
     public void setCurrentLocation() {
+        Location location = getLastKnownLocation();
+        if (location != null) {
+            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+            presenter.setPoint(point);
+        } else {
+            showErrorMessage(getString(R.string.location_unknown_error_message));
+            presenter.errorOnCurrentLocationSet();
+        }
+    }
+
+    private Location getLastKnownLocation() {
+        Location bestLocation = null;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             checkNeededPermissions();
         } else {
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-            if (location != null) {
-                LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-                presenter.setPoint(point);
+            LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            List<String> providers = mLocationManager.getProviders(true);
+            for (String provider : providers) {
+                Location l = mLocationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    bestLocation = l;
+                }
             }
         }
+        return bestLocation;
     }
 
     private void checkNeededPermissions() {
@@ -336,7 +348,13 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     @Override
     public void onClick(View v) {
         if(v == fabCurrentLocation) {
-            presenter.buttonClickedFabCurrentLocation();
+            if(isLocationEnabled()) {
+                presenter.buttonClickedFabCurrentLocation();
+            } else if(!isLocationEnabled() && presenter.isFabOpen()) {
+                presenter.buttonClickedFabCurrentLocation();
+            } else {
+                showErrorMessage(getString(R.string.location_disabled_error_message));
+            }
         } else if(v == fabGetEstimation) {
             presenter.buttonClickedFabGetEstimation();
         } else if(v == removeFromCurrentLocation) {
@@ -484,5 +502,25 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
                 closeFab();
                 break;
         }
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            return false;
+        }
+
+        return true;
     }
 }

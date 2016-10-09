@@ -16,5 +16,9 @@
     <string name="start_at">Comienzo</string>
     <string name="date_passed_error_message">Por favor, elije una fecha futura para tu viaje</string>
     <string name="price_formatted">Coste: %s</string>
+    <string name="title_activity_estimation_list">EstimationListActivity</string>
+    <string name="action_settings">Configuración</string>
+    <string name="location_disabled_error_message">Lo sentimos, pero el servicio de ubicación no está activado en su teléfono</string>
+    <string name="location_unknown_error_message">Lo sentimos, no somos capaces de encontrar tu ubicación actual</string>
 
 </resources>

@@ -45,4 +45,6 @@ public interface MapPresenter extends Presenter {
     void closeFromLayout();
 
     void closeToLayout();
+
+    void errorOnCurrentLocationSet();
 }

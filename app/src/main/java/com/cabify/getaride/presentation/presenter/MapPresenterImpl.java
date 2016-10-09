@@ -119,12 +119,6 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
 
     @Override
     public void closeEstimationLayout() {
-        /*
-        view.closeFromLayout();
-        view.closeToLayout();
-        view.resetStartAtDate();
-        view.clearMap();
-        */
         view.resetViews();
     }
 
@@ -142,6 +136,15 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
             toMarker.remove();
         }
         toLatLng = null;
+    }
+
+    @Override
+    public void errorOnCurrentLocationSet() {
+        if(fromLatLng == null) {
+            if(isFabOpen){
+                view.closeFab();
+            }
+        }
     }
 
     @Override

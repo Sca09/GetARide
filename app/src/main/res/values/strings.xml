@@ -24,4 +24,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="price_formatted">Cost: %s</string>
+
+    <string name="location_disabled_error_message">Sorry, but the location service is disabled in your device</string>
+    <string name="location_unknown_error_message">Sorry, we are unable to find your current location</string>
 </resources>
