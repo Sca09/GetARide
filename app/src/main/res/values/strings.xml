@@ -22,4 +22,6 @@
     <string name="date_passed_error_message">Please, choose a future date for your trip </string>
     <string name="title_activity_estimation_list">EstimationListActivity</string>
     <string name="action_settings">Settings</string>
+
+    <string name="price_formatted">Cost: %s</string>
 </resources>

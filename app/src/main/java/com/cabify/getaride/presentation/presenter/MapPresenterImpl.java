@@ -93,12 +93,13 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
     }
 
     @Override
+    public void buttonClickedSetStartAt() {
+        view.initDatePicker();
+    }
+
+    @Override
     public void buttonClickedRemoveStartAt() {
-        if(startAtDatSet) {
-            view.resetStartAtDate();
-        } else {
-            view.initDatePicker();
-        }
+        view.resetStartAtDate();
     }
 
     @Override

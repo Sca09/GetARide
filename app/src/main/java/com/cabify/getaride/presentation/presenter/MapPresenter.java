@@ -36,6 +36,8 @@ public interface MapPresenter extends Presenter {
 
     void buttonClickedRemoveToLocation();
 
+    void buttonClickedSetStartAt();
+
     void buttonClickedRemoveStartAt();
 
     void closeEstimationLayout();

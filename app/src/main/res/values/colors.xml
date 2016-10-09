@@ -4,5 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#E4A416</color>
     <color name="textColorPrimary">#303F9F</color>
+
     <color name="white">@android:color/white</color>
+    <color name="black">@android:color/black</color>
+    <color name="transparent">@android:color/transparent</color>
+
+    <color name="estimation_card_image_bg">#F6F6F6</color>
+    <color name="estimation_list_bg">#EDF6F3</color>
+
 </resources>

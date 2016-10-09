@@ -13,7 +13,9 @@ import android.view.View;
 import com.cabify.getaride.R;
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.presentation.utils.Constants;
+import com.cabify.getaride.presentation.view.fragment.EstimationListFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EstimationListActivity extends BaseActivity {
@@ -42,6 +44,9 @@ public class EstimationListActivity extends BaseActivity {
         showToolBarActionButton();
 
         estimationItemList = (List<EstimationItem>) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_ESTIMATION_LIST);
+
+        EstimationListFragment estimationListFragment = EstimationListFragment.newInstance((ArrayList<EstimationItem>) estimationItemList);
+        addFragment(R.id.fragmentContainer, estimationListFragment, true, false);
     }
 
     private void showToolBarActionButton() {

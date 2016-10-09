@@ -63,6 +63,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     private AppCompatEditText toEditText;
     private ImageView removeToCurrentLocation;
     private AppCompatEditText startAtEditText;
+    private ImageView setStartAt;
     private ImageView removeStartAt;
 
     private Animation fab_open;
@@ -99,6 +100,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
         toEditText = (AppCompatEditText) findViewById(R.id.to_edit_text);
         removeToCurrentLocation = (ImageView) findViewById(R.id.remove_to_current_location);
         startAtEditText = (AppCompatEditText) findViewById(R.id.start_at_edit_text);
+        setStartAt = (ImageView) findViewById(R.id.set_start_at);
         removeStartAt = (ImageView) findViewById(R.id.remove_start_at);
 
         fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
@@ -117,6 +119,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
         fabGetEstimation.setOnClickListener(this);
         removeFromCurrentLocation.setOnClickListener(this);
         removeToCurrentLocation.setOnClickListener(this);
+        setStartAt.setOnClickListener(this);
         removeStartAt.setOnClickListener(this);
     }
 
@@ -332,6 +335,8 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
             presenter.buttonClickedRemoveFromLocation();
         } else if(v == removeToCurrentLocation) {
             presenter.buttonClickedRemoveToLocation();
+        } else if(v == setStartAt) {
+            presenter.buttonClickedSetStartAt();
         } else if(v == removeStartAt) {
             presenter.buttonClickedRemoveStartAt();
         }
@@ -381,6 +386,8 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     @Override
     public void setStartAtTxt(String text) {
         startAtEditText.setText(text);
+        setStartAt.setVisibility(View.GONE);
+        removeStartAt.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -424,6 +431,8 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     public void resetStartAtDate() {
         presenter.setStartAtDatSet(false);
         setStartAtTxt(getString(R.string.start_asap));
+        setStartAt.setVisibility(View.VISIBLE);
+        removeStartAt.setVisibility(View.GONE);
     }
 
     @Override

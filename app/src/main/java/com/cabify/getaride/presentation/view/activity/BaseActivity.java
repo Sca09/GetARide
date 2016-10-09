@@ -1,6 +1,9 @@
 package com.cabify.getaride.presentation.view.activity;
 
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -37,7 +40,51 @@ public class BaseActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    protected ApplicationComponent getApplicationComponent() {
+    public ApplicationComponent getApplicationComponent() {
         return ((AndroidApplication) getApplication()).getApplicationComponent();
+    }
+
+    /**
+     * Adds a {@link Fragment} to this activity's layout.
+     *
+     * @param containerViewId The container view to where add the fragment.
+     * @param fragment The fragment to be added.
+     * @param isLastFragmentInFlow Define if the activity container will close when back button is pressed. If 'yes' the activity will close then this fragment is shwon and the back button is pressed
+     * @param duplicateFragment Define if the fragment will be duplicated even if the current fragment shown is the same type. If 'false' and current fragment is the same type no new fragment will be created. Note: implemented for the Content Details Fragment to be able to show several fragments in a row.
+     */
+
+    protected void addFragment(int containerViewId, Fragment fragment, boolean isLastFragmentInFlow, boolean duplicateFragment) {
+        // Clean all the back stack if we are showing a final fragment
+        if(isLastFragmentInFlow) {
+            this.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
+        String fragmentTag = fragment.getClass().getSimpleName();
+        boolean fragmentPopped = this.getFragmentManager().popBackStackImmediate(fragmentTag, 0);
+
+        if(!fragmentPopped) {
+            FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+            // Replace fragment is it is not in the back stack or it is not current fragment
+            if(this.getFragmentManager().findFragmentByTag(fragmentTag) == null || duplicateFragment || !isCurrentFragment(fragment)) {
+                if(!isLastFragmentInFlow) {
+                    fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName());
+                }
+                fragmentTransaction.replace(containerViewId, fragment, fragmentTag);
+                fragmentTransaction.commit();
+            }
+        }
+    }
+
+    protected boolean isCurrentFragment(Fragment fragment) {
+        Fragment currentFragment = this.getFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if(currentFragment == null) {
+            return false;
+        }
+
+        return currentFragment.getClass().getName().equals(fragment.getClass().getName());
+    }
+
+    public Navigator getNavigator() {
+        return navigator;
     }
 }

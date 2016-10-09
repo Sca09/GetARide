@@ -17,7 +17,7 @@ public class EstimationItem implements Serializable {
     @SerializedName("total_price")
     @Expose
     private Integer totalPrice;
-    @SerializedName("formatted_price")
+    @SerializedName("price_formatted")
     @Expose
     private String formattedPrice;
     @SerializedName("currency")
