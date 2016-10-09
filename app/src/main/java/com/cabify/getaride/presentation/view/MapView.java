@@ -1,7 +1,5 @@
 package com.cabify.getaride.presentation.view;
 
-import android.view.View;
-
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
 import com.google.android.gms.maps.model.LatLng;
@@ -14,6 +12,8 @@ import java.util.List;
  */
 
 public interface MapView {
+
+    void resetViews();
 
     void showProgress();
 

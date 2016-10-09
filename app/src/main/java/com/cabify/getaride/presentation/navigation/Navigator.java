@@ -1,5 +1,6 @@
 package com.cabify.getaride.presentation.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -25,15 +26,15 @@ public class Navigator {
         //empty
     }
 
-    public void navigateToEstimationList(Context context, ArrayList<EstimationItem> estimationItemList) {
-        if(context != null) {
-            Intent intentToLaunch = EstimationListActivity.getCallingIntent(context);
+    public void navigateToEstimationList(Activity activity, ArrayList<EstimationItem> estimationItemList, int requestCode) {
+        if(activity != null) {
+            Intent intentToLaunch = EstimationListActivity.getCallingIntent(activity);
 
             if(estimationItemList != null) {
                 intentToLaunch.putExtra(Constants.INTENT_EXTRA_ESTIMATION_LIST, estimationItemList);
             }
 
-            context.startActivity(intentToLaunch);
+            activity.startActivityForResult(intentToLaunch, requestCode);
         }
     }
 

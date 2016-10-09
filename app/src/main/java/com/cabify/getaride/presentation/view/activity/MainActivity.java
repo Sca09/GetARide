@@ -2,6 +2,7 @@ package com.cabify.getaride.presentation.view.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -295,6 +296,14 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     // MapView implementation
 
     @Override
+    public void resetViews() {
+        closeFromLayout();
+        closeToLayout();
+        resetStartAtDate();
+        clearMap();
+    }
+
+    @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -306,8 +315,7 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     @Override
     public void showEstimateResults(List<EstimationItem> estimationItemList) {
-        //showSnackbar("Found "+ estimationItemList.size() +" possibilities", coordinatorLayout);
-        navigator.navigateToEstimationList(this, (ArrayList<EstimationItem>) estimationItemList);
+        navigator.navigateToEstimationList(this, (ArrayList<EstimationItem>) estimationItemList, Constants.REQUEST_CODE_TO_ESTIMATION_LIST);
     }
 
     @Override
@@ -466,5 +474,15 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         presenter.setStartAtTime(hourOfDay, minute);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Constants.REQUEST_CODE_TO_ESTIMATION_LIST:
+                resetViews();
+                closeFab();
+                break;
+        }
     }
 }

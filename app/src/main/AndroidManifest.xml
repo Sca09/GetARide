@@ -32,6 +32,8 @@
 
         <activity
             android:name=".presentation.view.activity.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +43,9 @@
         </activity>
         <activity
             android:name=".presentation.view.activity.EstimationListActivity"
-            android:label="@string/title_activity_estimation_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

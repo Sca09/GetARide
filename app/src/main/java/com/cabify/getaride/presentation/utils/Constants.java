@@ -11,6 +11,8 @@ public class Constants {
     public static final String SIMPLE_DATE_FORMAT_FOR_START_AT  = "yyyy-MM-dd HH:mm";
     public static final String SIMPLE_DATE_FORMAT_FOR_PICKER    = "HH:mm";
 
+    public static final int REQUEST_CODE_TO_ESTIMATION_LIST     = 1000;
+
     public static final String INTENT_EXTRA_ESTIMATION_LIST     = "estimationList";
 
     public static final int MAX_IMAGE_SIZE  = 2048;
