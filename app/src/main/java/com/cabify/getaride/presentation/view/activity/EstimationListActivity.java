@@ -3,12 +3,9 @@ package com.cabify.getaride.presentation.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.cabify.getaride.R;
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
@@ -25,6 +22,7 @@ public class EstimationListActivity extends BaseActivity {
         return callingIntent;
     }
 
+    private CoordinatorLayout coordinatorLayout;
     private List<EstimationItem> estimationItemList;
 
     @Override
@@ -38,6 +36,8 @@ public class EstimationListActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,4 +79,7 @@ public class EstimationListActivity extends BaseActivity {
         overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
     }
 
+    public void showSnackbar(String message) {
+        showSnackbar(message, coordinatorLayout);
+    }
 }

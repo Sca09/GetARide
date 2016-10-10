@@ -34,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
         this.getApplicationComponent().inject(this);
     }
 
-    protected void showSnackbar(String message, View view) {
+    public void showSnackbar(String message, View view) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         snackbar.show();

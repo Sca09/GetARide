@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.cabify.getaride.R;
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.presentation.view.component.EstimationCard;
+import com.cabify.getaride.presentation.view.component.EstimationCard.OnEstimationCardListener;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class EstimationListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private Context context;
     private List<EstimationItem> estimationItemList;
+
+    private OnEstimationCardListener listener;
 
     public EstimationListAdapter(Context context, List<EstimationItem> estimationItemList) {
         this.context = context;
@@ -36,12 +39,20 @@ public class EstimationListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         EstimationItem item = estimationItemList.get(position);
 
-        ((EstimationHolder) holder).estimationCard.setData(item.getVehicleType().getIcons().getRegular(), item.getVehicleType().getName(), item.getVehicleType().getDescription(), item.getFormattedPrice(), item.getVehicleType().getIcon());
+        //((EstimationHolder) holder).estimationCard.setData(item.getVehicleType().getIcons().getRegular(), item.getVehicleType().getName(), item.getVehicleType().getDescription(), item.getFormattedPrice(), item.getVehicleType().getIcon());
+        ((EstimationHolder) holder).estimationCard.setData(item);
+        if(listener != null) {
+            ((EstimationHolder) holder).estimationCard.setOnEstimationCardListener(listener);
+        }
     }
 
     @Override
     public int getItemCount() {
         return (estimationItemList != null ? estimationItemList.size() : 0);
+    }
+
+    public void setOnEstimationCardListener(OnEstimationCardListener listener) {
+        this.listener = listener;
     }
 
     class EstimationHolder extends RecyclerView.ViewHolder {

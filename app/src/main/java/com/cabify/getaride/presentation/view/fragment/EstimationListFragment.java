@@ -11,12 +11,14 @@ import android.widget.LinearLayout;
 import com.cabify.getaride.R;
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.presentation.utils.Constants;
+import com.cabify.getaride.presentation.view.activity.EstimationListActivity;
 import com.cabify.getaride.presentation.view.adapter.EstimationListAdapter;
+import com.cabify.getaride.presentation.view.component.EstimationCard.OnEstimationCardListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstimationListFragment extends BaseFragment {
+public class EstimationListFragment extends BaseFragment implements OnEstimationCardListener {
 
 
     private LinearLayout rootView;
@@ -53,6 +55,7 @@ public class EstimationListFragment extends BaseFragment {
 
         estimationsRecyclerView = (RecyclerView) rootView.findViewById(R.id.estimations_recycler_view);
         adapter = new EstimationListAdapter(getActivity(), estimationItemList);
+        adapter.setOnEstimationCardListener(this);
         estimationsRecyclerView.setAdapter(adapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setStackFromEnd(true);
@@ -74,5 +77,10 @@ public class EstimationListFragment extends BaseFragment {
     private void setLayout() {
 
 
+    }
+
+    @Override
+    public void onEstimationCardClicked(EstimationItem item) {
+        ((EstimationListActivity) getActivity()).showSnackbar(getString(R.string.book_vehicle, item.getVehicleType().getName()));
     }
 }

@@ -3,13 +3,17 @@ package com.cabify.getaride.presentation.view.component;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cabify.getaride.R;
+import com.cabify.getaride.data.entity.response.entity.EstimationItem;
+import com.cabify.getaride.domain.estimate.EstimateInteractor;
 import com.cabify.getaride.presentation.utils.Constants;
 import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
@@ -18,17 +22,21 @@ public class EstimationCard extends LinearLayout {
 
     private Context context;
 
-    ImageView mainImage;
-    ImageView icoImage;
-    TextView nameText;
-    TextView descriptionText;
-    TextView priceFormattedText;
+    private CardView estimationCardLayout;
+    private ImageView mainImage;
+    private ImageView icoImage;
+    private TextView nameText;
+    private TextView descriptionText;
+    private TextView priceFormattedText;
 
-    String ico;
-    String name;
-    String description;
-    String priceFormatted;
-    int type;
+    private EstimationItem estimationItem;
+    private String ico;
+    private String name;
+    private String description;
+    private String priceFormatted;
+    private int type;
+
+    private OnEstimationCardListener listener;
 
     String[] vehicleTypes = {Constants.VEHICULE_TYPE_LITE,
             Constants.VEHICULE_TYPE_EXECUTIVE,
@@ -71,6 +79,7 @@ public class EstimationCard extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.estimation_card, this);
 
+        estimationCardLayout = (CardView) findViewById(R.id.estimation_card_layout);
         mainImage = (ImageView) findViewById(R.id.estimation_image);
         icoImage = (ImageView) findViewById(R.id.estimation_ico);
         nameText = (TextView) findViewById(R.id.estimation_name);
@@ -138,6 +147,32 @@ public class EstimationCard extends LinearLayout {
         if(!Strings.isNullOrEmpty(priceFormatted)) {
             priceFormattedText.setText(context.getString(R.string.price_formatted, priceFormatted));
         }
+
+        estimationCardLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null) {
+                    listener.onEstimationCardClicked(estimationItem);
+                }
+            }
+        });
+    }
+
+    public void setData(EstimationItem item) {
+        this.estimationItem = item;
+        this.ico = item.getVehicleType().getIcons().getRegular();
+        this.name = item.getVehicleType().getName();
+        this.description = item.getVehicleType().getDescription();
+        this.priceFormatted = item.getFormattedPrice();
+        for(int i = 0; i< vehicleTypes.length; i++) {
+            if(vehicleTypes[i].equals(item.getVehicleType().getIcon())) {
+                type = i;
+                break;
+            }
+        }
+
+        invalidate();
+        requestLayout();
     }
 
     public void setData(String ico, String name, String description, String priceFormatted, String vehicleType) {
@@ -161,5 +196,13 @@ public class EstimationCard extends LinearLayout {
         super.invalidate();
 
         setLayout();
+    }
+
+    public void setOnEstimationCardListener(OnEstimationCardListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnEstimationCardListener {
+        void onEstimationCardClicked(EstimationItem item);
     }
 }
