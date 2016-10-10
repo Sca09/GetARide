@@ -52,12 +52,12 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.google.android.gms:play-services:9.4.0'
-    testCompile 'junit:junit:4.12'
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile 'org.mockito:mockito-core:1.10.19'
 
     // Dagger
     apt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     provided 'javax.annotation:jsr250-api:1.0'
-    testCompile "junit:junit:$JUNIT_VERSION"
     testApt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     compile 'javax.inject:javax.inject:1'
