@@ -38,6 +38,7 @@ Libraries used in this project
 * [JUnit] [junit]
 * [Mockito] [mockito]
 * [Picasso] [picasso]
+* [Butterknife] [butterknife]
 
 License
 -------
@@ -63,3 +64,4 @@ License
 [junit]: https://github.com/junit-team/junit
 [mockito]: http://mockito.org/
 [picasso]: http://square.github.io/picasso/
+[butterknife]: http://jakewharton.github.io/butterknife/
