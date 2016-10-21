@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 
 import com.cabify.getaride.R;
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
+import com.cabify.getaride.presentation.internal.di.components.ActivityComponent;
 import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
 import com.cabify.getaride.presentation.presenter.MapPresenter;
 import com.cabify.getaride.presentation.presenter.MapPresenterImpl;
@@ -39,32 +40,38 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by davidtorralbo on 07/10/16.
  */
 
-public class MainActivity extends BaseActivity implements MapView, OnMapReadyCallback, OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class MainActivity extends BaseActivity implements MapView, OnMapReadyCallback, OnTimeSetListener, OnDateSetListener {
 
-    private CoordinatorLayout coordinatorLayout;
-    private ProgressBar progressBar;
-    private FloatingActionButton fabCurrentLocation;
-    private FloatingActionButton fabGetEstimation;
-    private CardView newEstimationStopsLayout;
-    private AppCompatEditText fromEditText;
-    private ImageView removeFromCurrentLocation;
-    private LinearLayout toEditTextLayout;
-    private AppCompatEditText toEditText;
-    private ImageView removeToCurrentLocation;
-    private AppCompatEditText startAtEditText;
-    private ImageView setStartAt;
-    private ImageView removeStartAt;
+    @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.current_location_button) FloatingActionButton fabCurrentLocation;
+    @BindView(R.id.get_estimation_button) FloatingActionButton fabGetEstimation;
+    @BindView(R.id.new_estimation_stops_layout) CardView newEstimationStopsLayout;
+    @BindView(R.id.from_edit_text) AppCompatEditText fromEditText;
+    @BindView(R.id.remove_from_current_location) ImageView removeFromCurrentLocation;
+    @BindView(R.id.to_edit_text_layout) LinearLayout toEditTextLayout;
+    @BindView(R.id.to_edit_text) AppCompatEditText toEditText;
+    @BindView(R.id.remove_to_current_location) ImageView removeToCurrentLocation;
+    @BindView(R.id.start_at_edit_text) AppCompatEditText startAtEditText;
+    @BindView(R.id.set_start_at) ImageView setStartAt;
+    @BindView(R.id.remove_start_at) ImageView removeStartAt;
 
     private Animation fab_open;
     private Animation fab_close;
@@ -78,6 +85,9 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -88,20 +98,6 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     @Override
     protected void onStart() {
         super.onStart();
-
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        fabCurrentLocation = (FloatingActionButton) findViewById(R.id.current_location_button);
-        fabGetEstimation = (FloatingActionButton) findViewById(R.id.get_estimation_button);
-        newEstimationStopsLayout = (CardView) findViewById(R.id.new_estimation_stops_layout);
-        fromEditText = (AppCompatEditText) findViewById(R.id.from_edit_text);
-        removeFromCurrentLocation = (ImageView) findViewById(R.id.remove_from_current_location);
-        toEditTextLayout = (LinearLayout) findViewById(R.id.to_edit_text_layout);
-        toEditText = (AppCompatEditText) findViewById(R.id.to_edit_text);
-        removeToCurrentLocation = (ImageView) findViewById(R.id.remove_to_current_location);
-        startAtEditText = (AppCompatEditText) findViewById(R.id.start_at_edit_text);
-        setStartAt = (ImageView) findViewById(R.id.set_start_at);
-        removeStartAt = (ImageView) findViewById(R.id.remove_start_at);
 
         fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
@@ -115,12 +111,15 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     private void setLayout() {
         startAtEditText.setText(getString(R.string.start_asap));
+
+        /*
         fabCurrentLocation.setOnClickListener(this);
         fabGetEstimation.setOnClickListener(this);
         removeFromCurrentLocation.setOnClickListener(this);
         removeToCurrentLocation.setOnClickListener(this);
         setStartAt.setOnClickListener(this);
         removeStartAt.setOnClickListener(this);
+        */
     }
 
     @Override
@@ -345,6 +344,11 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
     }
 
     @Override
+    public ActivityComponent getActivityComponentFromBaseActivity() {
+        return getActivityComponent();
+    }
+
+    @OnClick({R.id.current_location_button, R.id.get_estimation_button, R.id.remove_from_current_location, R.id.remove_to_current_location, R.id.set_start_at, R.id.remove_start_at})
     public void onClick(View v) {
         if(v == fabCurrentLocation) {
             if(isLocationEnabled()) {

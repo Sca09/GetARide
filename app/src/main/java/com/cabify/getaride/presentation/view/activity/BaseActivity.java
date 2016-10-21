@@ -12,7 +12,12 @@ import android.view.View;
 
 import com.cabify.getaride.R;
 import com.cabify.getaride.presentation.AndroidApplication;
+import com.cabify.getaride.presentation.internal.di.components.ActivityComponent;
 import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
+import com.cabify.getaride.presentation.internal.di.components.DaggerActivityComponent;
+import com.cabify.getaride.presentation.internal.di.components.DaggerApplicationComponent;
+import com.cabify.getaride.presentation.internal.di.modules.ActivityModule;
+import com.cabify.getaride.presentation.internal.di.modules.ApplicationModule;
 import com.cabify.getaride.presentation.navigation.Navigator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -28,10 +33,20 @@ public class BaseActivity extends AppCompatActivity {
     protected
     Navigator navigator;
 
+    private ActivityComponent activityComponent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getApplicationComponent().inject(this);
+        this.initializeInjector();
+    }
+
+    private void initializeInjector() {
+        this.activityComponent = DaggerActivityComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(new ActivityModule(this))
+                .build();
     }
 
     public void showSnackbar(String message, View view) {
@@ -86,5 +101,9 @@ public class BaseActivity extends AppCompatActivity {
 
     public Navigator getNavigator() {
         return navigator;
+    }
+
+    public ActivityComponent getActivityComponent() {
+        return activityComponent;
     }
 }

@@ -17,7 +17,12 @@ package com.cabify.getaride.presentation.internal.di.modules;
 
 import android.content.Context;
 
+import com.cabify.getaride.data.net.ApiClient;
+import com.cabify.getaride.data.net.ApiInterface;
+import com.cabify.getaride.data.repository.estimate.EstimateRepository;
+import com.cabify.getaride.data.repository.estimate.EstimateRepositoryImpl;
 import com.cabify.getaride.presentation.AndroidApplication;
+import com.cabify.getaride.presentation.internal.di.PerActivity;
 
 import javax.inject.Singleton;
 

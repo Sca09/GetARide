@@ -6,6 +6,8 @@ import com.cabify.getaride.data.entity.request.entity.Stop;
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.data.repository.estimate.EstimateRepository;
 import com.cabify.getaride.data.repository.estimate.EstimateRepositoryImpl;
+import com.cabify.getaride.presentation.internal.di.components.ActivityComponent;
+import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
 import com.cabify.getaride.presentation.utils.Utils;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -13,18 +15,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by davidtorralbo on 07/10/16.
  */
 
 public class EstimateInteractorImpl implements EstimateInteractor, EstimateRepository.OnRequestListener {
 
-    private EstimateRepository repository = new EstimateRepositoryImpl();
+    @Inject
+    protected EstimateRepository repository;
 
     private OnEstimationRequestListener listener;
 
-    public EstimateInteractorImpl(OnEstimationRequestListener listener) {
+    public EstimateInteractorImpl(OnEstimationRequestListener listener, ActivityComponent activityComponent) {
         this.listener = listener;
+
+        activityComponent.inject(this);
     }
 
     @Override

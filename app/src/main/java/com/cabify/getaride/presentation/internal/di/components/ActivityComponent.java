@@ -15,27 +15,19 @@
  */
 package com.cabify.getaride.presentation.internal.di.components;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.cabify.getaride.domain.estimate.EstimateInteractorImpl;
-import com.cabify.getaride.presentation.internal.di.modules.ApplicationModule;
-import com.cabify.getaride.presentation.presenter.MapPresenterImpl;
-import com.cabify.getaride.presentation.view.activity.BaseActivity;
-
-import javax.inject.Singleton;
+import com.cabify.getaride.presentation.internal.di.PerActivity;
+import com.cabify.getaride.presentation.internal.di.modules.ActivityModule;
 
 import dagger.Component;
 
-/**
- * Created by davidtorralbo on 07/10/16.
- */
+@PerActivity
+@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
+public interface ActivityComponent {
+  void inject(EstimateInteractorImpl estimateInteractor);
 
-@Singleton // Constraints this component to one-per-application or unscoped bindings.
-@Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
-    void inject(BaseActivity baseActivity);
-    void inject(MapPresenterImpl presenter);
-
-    //Exposed to sub-graphs.
-    Context context();
+  //Exposed to sub-graphs.
+  Activity activity();
 }

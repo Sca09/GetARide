@@ -47,10 +47,10 @@ public class MapPresenterImpl implements MapPresenter, EstimateInteractor.OnEsti
         this.view = view;
 
         if(this.view != null) {
-            view.getApplicationComponentFromApplication().inject(this);
-        }
+            this.view.getApplicationComponentFromApplication().inject(this);
 
-        estimateInteractor = new EstimateInteractorImpl(this);
+            estimateInteractor = new EstimateInteractorImpl(this, this.view.getActivityComponentFromBaseActivity());
+        }
     }
 
     @Override

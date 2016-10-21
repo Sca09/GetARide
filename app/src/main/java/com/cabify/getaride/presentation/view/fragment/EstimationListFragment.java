@@ -18,6 +18,10 @@ import com.cabify.getaride.presentation.view.component.EstimationCard.OnEstimati
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class EstimationListFragment extends BaseFragment implements OnEstimationCardListener {
 
 
@@ -25,8 +29,10 @@ public class EstimationListFragment extends BaseFragment implements OnEstimation
 
     List<EstimationItem> estimationItemList;
 
-    private RecyclerView estimationsRecyclerView;
+    @BindView(R.id.estimations_recycler_view) RecyclerView estimationsRecyclerView;
     private EstimationListAdapter adapter;
+
+    private Unbinder unbinder;
 
     public EstimationListFragment() {
         // Required empty public constructor
@@ -53,7 +59,8 @@ public class EstimationListFragment extends BaseFragment implements OnEstimation
         // Inflate the layout for this fragment
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_estimation_list, container, false);
 
-        estimationsRecyclerView = (RecyclerView) rootView.findViewById(R.id.estimations_recycler_view);
+        unbinder = ButterKnife.bind(this, rootView);
+
         adapter = new EstimationListAdapter(getActivity(), estimationItemList);
         adapter.setOnEstimationCardListener(this);
         estimationsRecyclerView.setAdapter(adapter);
@@ -77,6 +84,12 @@ public class EstimationListFragment extends BaseFragment implements OnEstimation
     private void setLayout() {
 
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

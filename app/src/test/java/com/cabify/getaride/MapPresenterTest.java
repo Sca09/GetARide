@@ -1,10 +1,14 @@
 package com.cabify.getaride;
 
+import android.accounts.AccountAuthenticatorActivity;
 import android.content.Context;
 
 import com.cabify.getaride.presentation.AndroidApplication;
+import com.cabify.getaride.presentation.internal.di.components.ActivityComponent;
 import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
+import com.cabify.getaride.presentation.internal.di.components.DaggerActivityComponent;
 import com.cabify.getaride.presentation.internal.di.components.DaggerApplicationComponent;
+import com.cabify.getaride.presentation.internal.di.modules.ActivityModule;
 import com.cabify.getaride.presentation.internal.di.modules.ApplicationModule;
 import com.cabify.getaride.presentation.presenter.MapPresenter;
 import com.cabify.getaride.presentation.presenter.MapPresenterImpl;
@@ -33,12 +37,14 @@ public class MapPresenterTest {
     MapView mapView = Mockito.mock(MapView.class);
 
     ApplicationComponent applicationComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(new AndroidApplication())).build();
+    ActivityComponent activityComponent = DaggerActivityComponent.builder().applicationComponent(applicationComponent).activityModule(new ActivityModule(new AccountAuthenticatorActivity())).build();
 
     MapPresenter presenter;
 
     @Before
     public void setUp() {
         when(mapView.getApplicationComponentFromApplication()).thenReturn(applicationComponent);
+        when(mapView.getActivityComponentFromBaseActivity()).thenReturn(activityComponent);
         presenter = new MapPresenterImpl(mapView);
     }
 

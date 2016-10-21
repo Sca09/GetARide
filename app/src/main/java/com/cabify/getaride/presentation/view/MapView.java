@@ -1,6 +1,7 @@
 package com.cabify.getaride.presentation.view;
 
 import com.cabify.getaride.data.entity.response.entity.EstimationItem;
+import com.cabify.getaride.presentation.internal.di.components.ActivityComponent;
 import com.cabify.getaride.presentation.internal.di.components.ApplicationComponent;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -60,4 +61,6 @@ public interface MapView {
     void showDefaultErrorMessage();
 
     ApplicationComponent getApplicationComponentFromApplication();
+
+    ActivityComponent getActivityComponentFromBaseActivity();
 }

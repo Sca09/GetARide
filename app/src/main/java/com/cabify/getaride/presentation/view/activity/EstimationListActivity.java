@@ -15,6 +15,9 @@ import com.cabify.getaride.presentation.view.fragment.EstimationListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EstimationListActivity extends BaseActivity {
 
     public static Intent getCallingIntent(Context context) {
@@ -22,13 +25,16 @@ public class EstimationListActivity extends BaseActivity {
         return callingIntent;
     }
 
-    private CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     private List<EstimationItem> estimationItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estimation_list);
+
+        ButterKnife.bind(this);
 
         overrideOpenTransition();
     }
@@ -37,9 +43,6 @@ public class EstimationListActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         showToolBarActionButton();
 

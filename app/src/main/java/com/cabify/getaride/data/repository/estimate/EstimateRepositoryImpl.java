@@ -8,8 +8,11 @@ import com.cabify.getaride.data.entity.response.entity.EstimationItem;
 import com.cabify.getaride.data.entity.response.utils.ErrorConversor;
 import com.cabify.getaride.data.net.ApiClient;
 import com.cabify.getaride.data.net.ApiInterface;
+import com.cabify.getaride.presentation.internal.di.PerActivity;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,10 +22,16 @@ import retrofit2.Response;
  * Created by davidtorralbo on 07/10/16.
  */
 
+@PerActivity
 public class EstimateRepositoryImpl implements EstimateRepository, Callback<List<EstimationItem>> {
 
     private ApiInterface apiService;
     private OnRequestListener listener;
+
+    @Inject
+    public EstimateRepositoryImpl(ApiInterface apiService) {
+        this.apiService = apiService;
+    }
 
     @Override
     public void getEstimation(String authToken, List<Stop> stops, String startAt, OnRequestListener listener) {
@@ -32,7 +41,6 @@ public class EstimateRepositoryImpl implements EstimateRepository, Callback<List
         request.setStops(stops);
         request.setStartAt(startAt);
 
-        apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<EstimationItem>> call = apiService.getEstimation(authToken, request);
         call.enqueue(this);
     }

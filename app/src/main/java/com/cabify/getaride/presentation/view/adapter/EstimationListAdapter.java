@@ -13,6 +13,9 @@ import com.cabify.getaride.presentation.view.component.EstimationCard.OnEstimati
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by davidtorralbo on 09/10/16.
  */
@@ -39,7 +42,6 @@ public class EstimationListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         EstimationItem item = estimationItemList.get(position);
 
-        //((EstimationHolder) holder).estimationCard.setData(item.getVehicleType().getIcons().getRegular(), item.getVehicleType().getName(), item.getVehicleType().getDescription(), item.getFormattedPrice(), item.getVehicleType().getIcon());
         ((EstimationHolder) holder).estimationCard.setData(item);
         if(listener != null) {
             ((EstimationHolder) holder).estimationCard.setOnEstimationCardListener(listener);
@@ -57,12 +59,12 @@ public class EstimationListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     class EstimationHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.estimation_card) EstimationCard estimationCard;
+
         public EstimationHolder(View itemView) {
             super(itemView);
 
-            estimationCard = (EstimationCard) itemView.findViewById(R.id.estimation_card);
+            ButterKnife.bind(this, itemView);
         }
-
-        EstimationCard estimationCard;
     }
 }
