@@ -111,15 +111,6 @@ public class MainActivity extends BaseActivity implements MapView, OnMapReadyCal
 
     private void setLayout() {
         startAtEditText.setText(getString(R.string.start_asap));
-
-        /*
-        fabCurrentLocation.setOnClickListener(this);
-        fabGetEstimation.setOnClickListener(this);
-        removeFromCurrentLocation.setOnClickListener(this);
-        removeToCurrentLocation.setOnClickListener(this);
-        setStartAt.setOnClickListener(this);
-        removeStartAt.setOnClickListener(this);
-        */
     }
 
     @Override
