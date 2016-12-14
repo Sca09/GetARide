@@ -10,7 +10,7 @@ To resolve this challenge I decided to use as the base of my architecture the [C
 
 * **Presentation**: That constains all the presentation logic. Following the [MVP][mvp] pattern, I use **views** to control all actions related to the UI/UX while the **presenters** will manage all the logic based on the user's actions.
 * **Domain**: It manages all the business logic of the app. In the middle between the UI/UX and the backend.
-* **Data**: This layer is in charge of the external communications. In this case it is needed to connect with the Cabify API, so I used a **net** layer for that. Using [Retrofit 2][retrofit2] as library to make the necessary RESTFull calls.
+* **Data**: This layer is in charge of the external communications. In this case it is needed to connect with the Cabify API, so I used a **net** layer for that. Using [Retrofit 2][retrofit2] as library to make the necessary RESTFul calls.
 
 
 UX
@@ -42,8 +42,6 @@ Libraries used in this project
 
 License
 -------
-
-    Copyright 2015 Karumi
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
