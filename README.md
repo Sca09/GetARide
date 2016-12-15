@@ -29,7 +29,7 @@ Finally the app will make a request to the Cabiy API in order to get the list of
 
 Testing
 -------
-I also provide a sample battery of JUnit test. This architecture is in deep used to facilitate unit testing and CI. [JUnit][junit] and [Mockito][mockito] are the libraries used to accomplish this task.
+I also provide a sample battery of JUnit test. This architecture is indeed used to facilitate unit testing and CI. [JUnit][junit] and [Mockito][mockito] are the libraries used to accomplish this task.
 
 Libraries used in this project
 ------------------------------
